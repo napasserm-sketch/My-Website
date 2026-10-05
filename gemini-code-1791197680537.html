@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Napas Sermma - Interactive Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+    .font-orbitron { font-family: 'Orbitron', sans-serif; }
+    .glass {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.5);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .glass-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 20px 30px -10px rgba(56, 189, 248, 0.25);
+    }
+    .glow-text {
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6), 0 0 40px rgba(168, 85, 247, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+  <!-- Landing Hero Section (หน้าแรกชื่อภาษาอังกฤษ) -->
+  <section id="hero-section" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 transition-all duration-700">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="text-center z-10 px-4">
+      <p class="text-cyan-400 font-orbitron tracking-widest text-sm md:text-base mb-3 uppercase">Interactive Web Portfolio</p>
+      <h1 class="text-5xl md:text-8xl font-black font-orbitron tracking-tight text-white glow-text mb-6">
+        NAPAS SERMMA
+      </h1>
+      <p class="text-slate-400 max-w-md mx-auto mb-10 text-lg">
+        ยินดีต้อนรับสู่พื้นที่รวบรวมเว็บไซต์และผลงานนวัตกรรมดิจิทัลพัฒนาโดย Napas Sermma
+      </p>
+      <button onclick="enterShowcase()" class="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full text-white font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300">
+        <span>สำรวจผลงานเว็บไซต์</span>
+        <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- Main Showcase Content -->
+  <main id="main-content" class="hidden opacity-0 transition-opacity duration-700 container mx-auto px-4 py-10">
+    <!-- Header Bar -->
+    <header class="flex flex-col md:flex-row justify-between items-center mb-12 glass p-6 rounded-2xl gap-4">
+      <div>
+        <h2 class="text-2xl font-bold font-orbitron text-cyan-400">NAPAS SERMMA</h2>
+        <p class="text-xs text-slate-400">Digital Project Directory & Showcase</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#eval-form" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm rounded-lg border border-slate-700 transition">
+          <i class="fa-solid fa-star text-yellow-400 mr-2"></i>ประเมินเว็บไซต์
+        </a>
+      </div>
+    </header>
+
+    <!-- Grid Web Applications -->
+    <section class="mb-16">
+      <div class="text-center mb-10">
+        <h3 class="text-3xl font-bold text-white mb-2">ผลงานเว็บไซต์ทั้งหมด</h3>
+        <p class="text-slate-400">เลือกคลิกเพื่อเข้าชมเว็บไซต์และระบบที่พัฒนาขึ้น</p>
+      </div>
+
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="col-span-full text-center py-10 text-slate-400">
+          <i class="fa-solid fa-circle-notch fa-spin text-3xl text-cyan-400 mb-3"></i>
+          <p>กำลังโหลดข้อมูลผลงานจาก Google Sheets...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Evaluation Section -->
+    <section id="eval-form" class="max-w-2xl mx-auto glass p-8 rounded-2xl mb-16">
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-bold text-white mb-1"><i class="fa-solid fa-clipboard-check text-cyan-400 mr-2"></i>แบบประเมินความพึงพอใจ</h3>
+        <p class="text-sm text-slate-400">ส่งข้อเสนอแนะเพื่อให้ผู้พัฒนาปรับปรุงเว็บไซต์ให้ดียิ่งขึ้น</p>
+      </div>
+
+      <form onsubmit="handleEvaluation(event)" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">ชื่อผู้ประเมิน</label>
+          <input type="text" id="eval-name" required placeholder="ใส่ชื่อของคุณ..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-cyan-400">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">ให้คะแนนผลงานโดยรวม</label>
+          <select id="eval-rating" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-cyan-400">
+            <option value="5">⭐⭐⭐⭐⭐ - ยอดเยี่ยมมาก</option>
+            <option value="4">⭐⭐⭐⭐ - ดีมาก</option>
+            <option value="3">⭐⭐⭐ - ปานกลาง</option>
+            <option value="2">⭐⭐ - ควรปรับปรุง</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">ความคิดเห็นเพิ่มเติม</label>
+          <textarea id="eval-comment" rows="3" placeholder="เขียนความรู้สึกหรือข้อเสนอแนะ..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-cyan-400"></textarea>
+        </div>
+        <button type="submit" id="submit-btn" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg text-white font-semibold hover:opacity-90 transition">
+          ส่งผลการประเมิน
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="text-center py-6 text-slate-500 text-sm border-t border-slate-800/50">
+    © Napas Sermma Portfolio - Powered by Google Apps Script & Google Sheets
+  </footer>
+
+  <script>
+    function enterShowcase() {
+      const hero = document.getElementById('hero-section');
+      const main = document.getElementById('main-content');
+      
+      hero.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        hero.style.display = 'none';
+        main.classList.remove('hidden');
+        setTimeout(() => main.classList.remove('opacity-0'), 50);
+        loadProjects();
+      }, 700);
+    }
+
+    function loadProjects() {
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(renderProjects).getProjectsData();
+      } else {
+        renderProjects([
+          { title: 'Personal Profile', category: 'Biography', url: 'https://sites.google.com/northbkk.ac.th/banner/home', description: 'ข้อมูลประวัติส่วนตัว ประวัติการศึกษา และผลงาน', icon: 'fa-id-card' },
+          { title: 'School Web Application', category: 'Web App', url: 'https://napasserm-sketch.github.io/School/', description: 'ระบบบริหารจัดการและข้อมูลโรงเรียนออนไลน์', icon: 'fa-graduation-cap' },
+          { title: 'BMI Calculator', category: 'Health Tool', url: 'https://napasserm-sketch.github.io/bmi/', description: 'โปรแกรมคำนวณและประเมินดัชนีมวลกายแบบโต้ตอบ', icon: 'fa-calculator' },
+          { title: 'Creative Interactive Space', category: 'Showcase', url: 'https://napasserm-sketch.github.io/-/', description: 'พื้นที่นำเสนอผลงานไอเดียและงานสร้างสรรค์ดิจิทัล', icon: 'fa-cubes' },
+          { title: 'THE KOP - Liverpool FC', category: 'Sports Web', url: 'https://napasserm-sketch.github.io/THE-KOP/', description: 'เว็บไซต์แฟนคลับและเรื่องราวสโมสรฟุตบอลลิเวอร์พูล (THE KOP)', icon: 'fa-futbol' },
+          { title: 'Team Showcase', category: 'Portfolio', url: 'https://napasserm-sketch.github.io/Team/', description: 'ศูนย์รวมข้อมูลผลงานและการทำงานร่วมกันของทีม', icon: 'fa-users' },
+          { title: 'Guitar Learning Portal', category: 'Education', url: 'https://sites.google.com/northbkk.ac.th/guitar/home', description: 'แหล่งเรียนรู้และคู่มือการฝึกเล่นกีตาร์เบื้องต้น', icon: 'fa-music' }
+        ]);
+      }
+    }
+
+    function renderProjects(projects) {
+      const grid = document.getElementById('projects-grid');
+      grid.innerHTML = projects.map(p => `
+        <div class="glass-card rounded-2xl p-6 flex flex-col justify-between group relative overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 text-7xl text-white/5 pointer-events-none group-hover:scale-110 transition-transform">
+            <i class="fa-solid ${p.icon}"></i>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-semibold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">${p.category}</span>
+              <i class="fa-solid ${p.icon} text-cyan-400 text-xl"></i>
+            </div>
+            <h4 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">${p.title}</h4>
+            <p class="text-slate-400 text-sm mb-6 leading-relaxed">${p.description}</p>
+          </div>
+          <a href="${p.url}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-2.5 bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-slate-200 text-sm font-semibold rounded-xl border border-slate-700 hover:border-cyan-400 transition-all">
+            <span>เยี่ยมชมเว็บไซต์</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </a>
+        </div>
+      `).join('');
+    }
+
+    function handleEvaluation(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.innerText = 'กำลังส่งข้อมูล...';
+
+      const payload = {
+        name: document.getElementById('eval-name').value,
+        rating: document.getElementById('eval-rating').value,
+        comment: document.getElementById('eval-comment').value
+      };
+
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(res => {
+          alert(res.message);
+          e.target.reset();
+          btn.disabled = false;
+          btn.innerText = 'ส่งผลการประเมิน';
+        }).saveEvaluation(payload);
+      } else {
+        alert('ส่งผลการประเมินสำเร็จ (Demo Mode)');
+        e.target.reset();
+        btn.disabled = false;
+        btn.innerText = 'ส่งผลการประเมิน';
+      }
+    }
+  </script>
+</body>
+</html>
